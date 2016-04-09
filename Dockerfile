@@ -31,6 +31,7 @@ rm -rf /usr/share/man/??_*
 #RUN pecl install -o -f yaf 
 #RUN apt-get install php5-dev make php-pear -y
 RUN yes '' | pecl install yaf
+RUN echo "extension=yaf.so" | tee -a /etc/php5/fpm/php.ini
 
 # tweak nginx config
 RUN sed -i -e"s/worker_processes  1/worker_processes 5/" /etc/nginx/nginx.conf && \
