@@ -19,13 +19,6 @@ apt-get update && \
 apt-get upgrade -y && \
 BUILD_PACKAGES="supervisor nginx php5-fpm git php5-mysql php-apc php5-curl php5-gd php5-intl php5-mcrypt php5-memcache php5-sqlite php5-tidy php5-xmlrpc php5-xsl php5-pgsql php5-mongo php5-ldap pwgen" && \
 apt-get -y install $BUILD_PACKAGES && \
-
-#compile Yaf
-RUN git clone -b php5 https://github.com/laruence/php-yaf 
-RUN docker-php-ext-configure php-yaf
-RUN docker-php-ext-install php-yaf
-
-
 apt-get remove --purge -y software-properties-common && \
 apt-get autoremove -y && \
 apt-get clean && \
@@ -35,8 +28,18 @@ rm -rf /var/lib/apt/lists/* && \
 rm -rf /usr/share/man/?? && \
 rm -rf /usr/share/man/??_*
 
-
-
+ENV YAF_VERSION 2.7.1
+# Download and build YAF
+RUN mkdir -p /src \
+    && cd /src \
+    && curl -f -L -O http://tools.netsa.cert.org/releases/yaf-$YAF_VERSION.tar.gz \
+    && tar zxf yaf-$YAF_VERSION.tar.gz \
+    && export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
+    && cd /src/yaf-$YAF_VERSION \
+    && ./configure --enable-applabel \
+    && make \
+    && make install \
+    && rm -rf /src
 
 
 # tweak nginx config
