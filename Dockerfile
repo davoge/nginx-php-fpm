@@ -19,6 +19,13 @@ apt-get update && \
 apt-get upgrade -y && \
 BUILD_PACKAGES="supervisor nginx php5-fpm git php5-mysql php-apc php5-curl php5-gd php5-intl php5-mcrypt php5-memcache php5-sqlite php5-tidy php5-xmlrpc php5-xsl php5-pgsql php5-mongo php5-ldap pwgen" && \
 apt-get -y install $BUILD_PACKAGES && \
+
+#compile Yaf
+RUN git clone -b php5 https://github.com/laruence/php-yaf 
+RUN docker-php-ext-configure php-yaf
+RUN docker-php-ext-install php-yaf
+
+
 apt-get remove --purge -y software-properties-common && \
 apt-get autoremove -y && \
 apt-get clean && \
@@ -29,10 +36,7 @@ rm -rf /usr/share/man/?? && \
 rm -rf /usr/share/man/??_*
 
 
-#compile Yaf
-RUN git clone -b php5 https://github.com/laruence/php-yaf 
-RUN docker-php-ext-configure php-yaf
-RUN docker-php-ext-install php-yaf
+
 
 
 # tweak nginx config
