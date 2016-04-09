@@ -28,9 +28,7 @@ rm -rf /var/lib/apt/lists/* && \
 rm -rf /usr/share/man/?? && \
 rm -rf /usr/share/man/??_*
 
-RUN pecl install yaf
-RUN docker-php-ext-enable yaf
-
+RUN pecl install -o -f yaf 
 
 # tweak nginx config
 RUN sed -i -e"s/worker_processes  1/worker_processes 5/" /etc/nginx/nginx.conf && \
