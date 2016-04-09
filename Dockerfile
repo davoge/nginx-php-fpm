@@ -28,18 +28,8 @@ rm -rf /var/lib/apt/lists/* && \
 rm -rf /usr/share/man/?? && \
 rm -rf /usr/share/man/??_*
 
-ENV YAF_VERSION 2.7.1
-# Download and build YAF
-RUN mkdir -p /src \
-    && cd /src \
-    && curl -f -L -O http://tools.netsa.cert.org/releases/yaf-$YAF_VERSION.tar.gz \
-    && tar zxf yaf-$YAF_VERSION.tar.gz \
-    && export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
-    && cd /src/yaf-$YAF_VERSION \
-    && ./configure --enable-applabel \
-    && make \
-    && make install \
-    && rm -rf /src
+RUN pecl install yaf
+RUN docker-php-ext-enable yaf
 
 
 # tweak nginx config
